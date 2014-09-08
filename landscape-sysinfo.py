@@ -9,9 +9,8 @@
 # Requires: python-utmp 
 # for counting users.
 #
-# 2014-09-07 V1.0 jw, 
-#		ad hoc writeup, feature-complete. Probably buggy?
-#
+# 2014-09-07 V1.0 jw, ad hoc writeup, feature-complete. Probably buggy?
+# 2014-10-08 V1.1 jw, survive without swap
 
 import sys,os,time,posix,glob,utmp
 
@@ -46,7 +45,7 @@ def proc_meminfo():
   for l in open('/proc/meminfo').readlines():
     a = l.split()
     items[a[0]] = int(a[1])
-  print items['MemTotal:'], items['MemFree:'], items['SwapTotal:'], items['SwapFree:']
+  # print items['MemTotal:'], items['MemFree:'], items['SwapTotal:'], items['SwapFree:']
   return items
 
 loadav = float(open("/proc/loadavg").read().split()[1])
