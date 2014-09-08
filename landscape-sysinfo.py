@@ -15,7 +15,7 @@
 
 import sys,os,time,posix,glob,utmp
 
-_version_ = '1.0'
+_version_ = '1.1'
 
 def dev_addr(device):
   """ find the local ip address on the given device """
@@ -24,7 +24,7 @@ def dev_addr(device):
     for a in l.split():
       if seen == 'src': return a
       seen = a
-  return none
+  return None
 
 def default_dev():
   """ find the device where our default route is """
@@ -32,7 +32,7 @@ def default_dev():
     a = l.split()
     if a[1] == '00000000':
       return a[0]
-  return none
+  return None
 
 def utmp_count():
   u = utmp.UtmpRecord()
@@ -59,8 +59,10 @@ defaultdev = default_dev()
 ipaddr = dev_addr(defaultdev)
 users = utmp_count()
 meminfo = proc_meminfo()
-memperc = "%d%%" % (100-100.*meminfo['MemFree:']/meminfo['MemTotal:'])
-swapperc = "%d%%" % (100-100.*meminfo['SwapFree:']/meminfo['SwapTotal:'])
+memperc = "%d%%" % (100-100.*meminfo['MemFree:']/(meminfo['MemTotal:'] or 1))
+swapperc = "%d%%" % (100-100.*meminfo['SwapFree:']/(meminfo['SwapTotal:'] or 1))
+
+if meminfo['SwapTotal:'] == 0: swapperc = '---'
 
 print "  System information as of %s\n" % time.asctime()
 print "  System load:  %-5.2f                Processes:           %d" % (loadav, processes)
