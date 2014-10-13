@@ -11,13 +11,15 @@
 #
 # 2014-09-07 V1.0 jw, ad hoc writeup, feature-complete. Probably buggy?
 # 2014-10-08 V1.1 jw, survive without swap
+# 2014-10-13 V1.2 jw, survive without network
 
 import sys,os,time,posix,glob,utmp
 
-_version_ = '1.1'
+_version_ = '1.2'
 
 def dev_addr(device):
   """ find the local ip address on the given device """
+  if device is None: return None
   for l in os.popen('ip route list dev '+device):
     seen=''
     for a in l.split():
